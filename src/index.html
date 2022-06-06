@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+<head runat="server">
+    <meta name="viewport" content="width=device-width" />
+    <title>Region Service Report</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/app.css" />   
+    <script type="text/javascript" src="/assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/assets/js/reporte.js"></script>
+</head>
+<body>
+<div>
+    <div id="errorMessage" class="alert alert-danger"></div>
+    <div class="widget-body">      
+        <br/>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Conectados</th>        
+                        <th scope="col">Hablando</th>
+                        <th scope="col">Disponibles</th>
+                        <th scope="col">No Disponibles</th>
+                    </tr>
+                </thead>        
+                <tbody id="agentDataTable">                
+                </tbody>
+            </table>
+        </div>
+        <br/>       
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Region/Empresa</th>        
+                        <th scope="col">Recibidas</th>
+                        <th scope="col">Atendidas</th>
+                        <th scope="col">Abandonadas</th>
+                        <th scope="col">En Cola</th>
+                        <th scope="col">TMO</th>
+                        <th scope="col">Transferidas</th>
+                        <th scope="col">% Atención</th>
+                        <th scope="col">% Servicio</th>
+
+                    </tr>
+                </thead>        
+                <tbody id="regionTable">                
+                </tbody>
+            </table>
+        </div>
+        <br/>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Region/Empresa</th>   
+                        <th scope="col">Servicio</th>       
+                        <th scope="col">Recibidas</th>
+                        <th scope="col">Atendidas</th>
+                        <th scope="col">Abandonadas</th>
+                        <th scope="col">En Cola</th>
+                        <th scope="col">TMO</th>
+                        <th scope="col">Transferidas</th>
+                        <th scope="col">% Atención</th>
+                        <th scope="col">% Servicio</th>
+                    </tr>
+                </thead>        
+                <tbody id="regionServiceTable">                
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,15 @@
+﻿body
+{
+    color: black;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    /*overflow: hidden;*/
+    font-size: 14px;
+    /*background-color: gray;*/
+}
+
+.numberColumn{
+    color: #3f73d7;
+    font-size: 1em;
+}
