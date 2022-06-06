@@ -1,8 +1,8 @@
-﻿var config = {};
+var config = {};
 const genericQueueId = '843c2b42-6747-4b16-9d61-c60b3bf9f144'
 const queueDataTokenURI = "https://l716g7cjn8.execute-api.us-east-1.amazonaws.com/dev/api/signin-cge"
-const queueDataReportURI = "https://ctu47v13xf.execute-api.us-east-2.amazonaws.com/default/getQueueDataReport"
-//const queueDataReportURI = "https://l716g7cjn8.execute-api.us-east-1.amazonaws.com/dev/api/queuereportdata"
+//const queueDataReportURI = "https://ctu47v13xf.execute-api.us-east-2.amazonaws.com/default/getQueueDataReport"
+const queueDataReportURI = "https://l716g7cjn8.execute-api.us-east-1.amazonaws.com/dev/api/queuereportdata"
 const pollingTime = 30000;//milliseconds
 var token;
 var queues = [];
@@ -103,11 +103,11 @@ async function update(){
     
     const agentData = await getQueueObservationData(token, genericQueueId);
     console.log(agentData[0], "agentData")
-    //const queueDataToken = await getQueueDataToken();
+    const queueDataToken = await getQueueDataToken();
     //console.log(queueDataToken, "queueDataToken");
 
-    //const queueDataReport = await getQueueDataReport(queueDataToken);
-    const queueDataReport = await getQueueDataReport();
+    const queueDataReport = await getQueueDataReport(queueDataToken);
+    //const queueDataReport = await getQueueDataReport();
    
     $.each(queueDataReport, function (index, item) { 
         item.onQueue = 0      
@@ -335,10 +335,10 @@ function getQueueDataReport(token) {
         $.ajax({
             url: url,
             type: "GET",            
-            /*headers: {
+            headers: {
                 'Authorizer': token,
                 'Authorization': 'Basic SVVfR05TWUNfQ0dFOkluaWNpbzAxIw=='                
-            },*/
+            },
             success: function (result) {
                console.log(result, "getQueueDataReport")
                 resolve(result);
