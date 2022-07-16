@@ -100,6 +100,7 @@ async function update(){
     
     let regionData = [];        
     let regionServiceData = [];
+    let totalData = {region:'', service:'', offered: 0, answered: 0, abandon: 0, nServiceLevel: 0, tHandle: 0, transferred: 0, onQueue: 0 }
     
     const agentData = await getQueueObservationData(token, genericQueueId);
     console.log(agentData[0], "agentData")
@@ -116,9 +117,18 @@ async function update(){
             item = setCalculatedFields(item);  
             const onQueueValue = conversations.filter(c => c.flowOutcomes && c.flowOutcomes.includes(item.region) && c.queueName == item.service)
             if(onQueueValue)
-            item.onQueue = onQueueValue.length
+                item.onQueue = onQueueValue.length
 
             regionServiceData.push({ ...item });
+
+            totalData.offered = totalData.offered + item.offered;
+            totalData.answered = totalData.answered + item.answered;
+            totalData.abandon = totalData.abandon + item.abandon;
+            totalData.nServiceLevel = totalData.nServiceLevel + item.nServiceLevel;
+            totalData.tHandle = totalData.tHandle + item.tHandle;
+            totalData.transferred = totalData.transferred + item.transferred; 
+            totalData.onQueue = totalData.onQueue + item.onQueue;
+            totalData = setCalculatedFields(totalData);
         }
 
         const regionDataItem = regionData.find(i => i.region == item.region);  
@@ -139,12 +149,13 @@ async function update(){
             item = setCalculatedFields(item);
             regionData.push({ ...item })
         } 
+       
         
      });
 
     updateAgentData(agentData);
     updateRegionData(regionData);
-    updateRegionServiceData(regionServiceData);
+    updateRegionServiceData(regionServiceData, totalData);    ;
     setTimeout(update, pollingTime);
 }
 
@@ -164,6 +175,9 @@ function setCalculatedFields(item){
         item.tmo = (item.tHandle / item.answered / 1000).toFixed(2);
     else
         item.tmo = 0;
+
+    //tmo format
+    item.tmo = new Date(item.tmo * 1000).toISOString().slice(11, 19);
 
     //Percentage format
     item.servicePercent = parseFloat(item.servicePercent * 100).toFixed(2)+"%"
@@ -438,13 +452,22 @@ function updateRegionData(data){
 
 };
 
-function updateRegionServiceData(data){
+function updateRegionServiceData(data, totalData){
     $("#errorMessage").hide();
     const tableBody = $("#regionServiceTable");
     tableBody.empty();
     $.each(data, function (index, item) {                   
         tableBody.append('<tr> <td>' + item.region + '</td><td>' + item.service + '</td><td class="numberColumn">' + item.offered + '</td><td class="numberColumn">' + item.answered + '</td><td class="numberColumn">' + item.abandon + '</td><td class="numberColumn">' + item.onQueue + '</td><td class="numberColumn">' + item.tmo + '</td><td class="numberColumn">' + item.transferred + '</td><td class="numberColumn">' + item.answeredPercent + '</td><td class="numberColumn">' + item.servicePercent + '</td><tr>');
      });
+
+     if(totalData.offered == 0){
+        totalData.tmo = "00:00:00";
+        totalData.answeredPercent = "0.00%";
+        totalData.servicePercent = "0.00%";
+     }
+        
+     tableBody.append('<tr> <td>' + totalData.region + '</td><td>' + "<b>TOTAL<b/>" + '</td><td class="numberColumn">' + totalData.offered + '</td><td class="numberColumn">' + totalData.answered + '</td><td class="numberColumn">' + totalData.abandon + '</td><td class="numberColumn">' + totalData.onQueue + '</td><td class="numberColumn">' + totalData.tmo + '</td><td class="numberColumn">' + totalData.transferred + '</td><td class="numberColumn">' + totalData.answeredPercent + '</td><td class="numberColumn">' + totalData.servicePercent + '</td><tr>');
+    
 
 };
 
